@@ -39,7 +39,7 @@ module KuaiJieQian
           "templateType": template_type
         }
         seal_data = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
-        return Base64.decode64(seal_data[:sealData])
+        return seal_data[:sealData]
       end
 
       #创建企业用户账号

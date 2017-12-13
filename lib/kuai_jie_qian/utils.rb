@@ -1,11 +1,13 @@
 # coding: utf-8
+
 module KuaiJieQian
   module Utils
-
-    # 把 hash 中的 key，都转化为 symbol 类型
     #
+    # 把 hash 中的 key，都转化为 symbol 类型
     # @param hash [Hash] 需要更改的 hash
+    #
     # @return [Hash] 更改后的 hash
+    #
     def self.symbolize_keys(hash)
       new_hash = {}
       hash.each do |key, value|

@@ -35,7 +35,7 @@ RSpec.describe '平台签名' do
 
   it "服务器本地文件，成功" do
     pdf_file_path = "/tmp/test.pdf"
-    pdf_file_dst_path = "/tmp/merchant_sign.pdf"
+    pdf_file_dst_path = "/tmp/merchant_local_sign.pdf"
 
     sign_pos = {
       "posPage" => "1",

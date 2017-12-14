@@ -23,6 +23,13 @@ RSpec.describe '平台签名' do
     if '0' ==res[:errCode].to_s
       file_content = Base64.decode64(res[:stream])
       File.write("tmp/merchant_sign.pdf", file_content)
+
+      # KuaiJieQian::Utils.pdf_to_png("tmp/merchant_sign.pdf")
+
+      pdf = Magick::ImageList.new("tmp/merchant_sign.pdf")
+      # thumb = pdf.scale(300, 300) { self.background_color = "white" }
+      pdf.background_color = "white"
+      pdf.write "tmp/merchant_sign.png"
     end
   end
 

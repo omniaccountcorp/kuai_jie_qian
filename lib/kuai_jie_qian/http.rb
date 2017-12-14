@@ -1,4 +1,5 @@
 # coding: utf-8
+
 module KuaiJieQian
   module Http
 
@@ -28,6 +29,7 @@ module KuaiJieQian
         raise "post [#{final_url}] 解析结果出错"
       end
 
+      KuaiJieQian.logger.info "res: [#{res}]\n"
       res
     end
 

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module KuaiJieQian
   class Railtie < ::Rails::Railtie
     initializer "KuaiJieQian.logger" do

@@ -1,7 +1,20 @@
 # coding: utf-8
+
 module KuaiJieQian
   class Client
-
+    #
+    # 初始化SDK
+    # @param options_arg [Hash] 配置信息
+    #   * host [String] java服务器 IP:port
+    #   * project_config [Hash] 项目信息
+    #   * http_config [Hash] 协议信息
+    #   * sign_config [Hash] 签名信息
+    #
+    # @return [ Hash ] 结果集
+    #   * errCode [Integer] 错误码
+    #   * msg [String] 错误信息
+    #   * errShow [Boolean] 错误信息是否显示
+    #
     def initialize(options_arg)
       options = Utils.symbolize_keys(options_arg)
       @config = {

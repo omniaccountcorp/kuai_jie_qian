@@ -21,5 +21,13 @@ module KuaiJieQian
       kit.to_pdf
     end
 
+    def self.pdf_to_png(file)
+      pdf = Grim.reap(file)
+      png = pdf[0].save(file.split(".").first + '.png',
+                        {:quality => 90, :alpha => "remove", :colorspace => "RGB"}
+                      )
+
+    end
+
   end # end module
 end

@@ -11,7 +11,7 @@ RSpec.describe '用户签名' do
     end
 
     seal_position_info = {
-      "postPage" => "1",
+      "posPage" => "1",
       "posType" => 1,
       "key" => "提前还款",
       "posX" => 40,
@@ -21,7 +21,7 @@ RSpec.describe '用户签名' do
 
     person = client.user_register("person", "山野鸠夫", "65322519740619695X", "RED", "RECTANGLE")
 
-    res = client.user_sign(person["account_id"], person["seal_data"], pdf_file_stream, 'Key', seal_position_info)
+    res = client.user_sign(person[:account_id], person[:seal_data], pdf_file_stream, 'Key', seal_position_info)
 
     if '0' ==res[:errCode].to_s
       file_content = Base64.decode64(res[:stream])
@@ -40,7 +40,7 @@ RSpec.describe '用户签名' do
     end
 
     seal_position_info = {
-      "postPage" => "1",
+      "posPage" => "1",
       "posType" => 1,
       "key" => "提前还款",
       "posX" => 40,
@@ -49,11 +49,37 @@ RSpec.describe '用户签名' do
     }
 
     company = client.user_register("company", "大众传媒", "358416983", "RED", "STAR", "NORMAL")
-    res = client.user_sign(company["account_id"], company["seal_data"], pdf_file_stream, 'Key', seal_position_info)
+    res = client.user_sign(company[:account_id], company[:seal_data], pdf_file_stream, 'Key', seal_position_info)
 
     if '0' ==res[:errCode].to_s
       file_content = Base64.decode64(res[:stream])
       File.write("tmp/company_user_sign.pdf", file_content)
+      KuaiJieQian::Utils.pdf_to_png("tmp/company_user_sign.pdf")
+
     end
+  end
+
+  it "本地签名，平台用户签名成功" do
+    pdf_file_path = "/tmp/test.pdf"
+    pdf_file_dst_path = "/tmp/company_user_local_sign.pdf"
+
+    sign_pos = {
+      "posPage" => "1",
+      "posType" => 1,
+      "key" => "提前还款",
+      "posX" => 40,
+      "posY" => 0,
+      "width" => 80
+    }
+
+    file_info = {
+      srcPdfFile: pdf_file_path,
+      dstPdfFile: pdf_file_dst_path,
+      fileName: '',
+      ownerPassword: '',
+    }
+
+    company = client.user_register("company", "大众传媒", "358416983", "RED", "STAR", "NORMAL")
+    res = client.user_sign_with_file(company[:account_id], company[:seal_data], file_info, 'Key', sign_pos)
   end
 end

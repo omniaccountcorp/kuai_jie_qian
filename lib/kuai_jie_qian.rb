@@ -4,6 +4,8 @@ require "json"
 require "rest-client"
 require "pdfkit"
 require "base64"
+require "grim"
+require 'RMagick'
 
 require "kuai_jie_qian/version"
 require "kuai_jie_qian/logger"

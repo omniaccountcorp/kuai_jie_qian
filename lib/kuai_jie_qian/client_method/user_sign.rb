@@ -39,6 +39,21 @@ module KuaiJieQian
 
       end
 
+      def user_sign_with_file(account_id, seal_data, file_info, sign_type, sign_pos)
+        path = "tech-sdkwrapper/timevale/sign/userFileSign"
+
+        params = {
+          "accountId": account_id,
+          "sealData": seal_data,
+          "file": file_info,
+          "signType": sign_type,
+          "signPos": sign_pos
+        }
+
+        KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
+
+      end
+
     end # end module
   end
 end

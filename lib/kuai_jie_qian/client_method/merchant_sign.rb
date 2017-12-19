@@ -6,7 +6,6 @@ module KuaiJieQian
       #
       # 平台自身签署摘要(文件流)
       # @param file_stream [file] 文件流
-      # @param sign_type [String] 签章类型，Single（单页签章）、Multi（多页签章）、Edges（签骑缝章）、Key（关键字签章）
       # @param seal_position_info [hash] 签章信息
       #   * pos_page [String] 签署页码, 若为多页签章，支持页码格式“1-3,5,8“, 坐标定位时不可空
       #   * pos_type [Integer] 默认0（若为关键字定位，签章类型（signType）必须指定为关键字定位才生效）
@@ -14,15 +13,16 @@ module KuaiJieQian
       #   * pos_x [Float] 签署位置X坐标
       #   * pos_y [Float] 签署位置Y坐标
       #   * width [Float] 印章展现高度
+      # @param sign_type [String] 签章类型，Single（单页签章）、Multi（多页签章）、Edges（签骑缝章）、Key（关键字签章）
       #
       # @return [ Hash ] 结果集
       #   * errCode [Integer] 错误码
       #   * msg [String] 错误信息
       #   * errShow [Boolean] 错误信息是否显示
       #   * signServiceId [String] 签署记录id
-      #   * stream [String] 签署后的文件base64
+      #   * stream [String] 签署后的文件 base64
       #
-      def merchant_sign(file_stream, sign_type, seal_position_info)
+      def merchant_sign(file_stream, seal_position_info, sign_type="Key")
         path = "tech-sdkwrapper/timevale/sign/selfStreamSign"
 
         params = {
@@ -31,7 +31,9 @@ module KuaiJieQian
           :signPos => seal_position_info.to_json,
         }
 
-        KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params, nil)
+        result = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params, nil)
+
+        Base64.decode64(result[:stream])
       end
       #
       # 平台自身签署摘要(本地)

@@ -21,12 +21,17 @@ module KuaiJieQian
       kit.to_pdf
     end
 
-    def self.pdf_to_png(file)
-      pdf = Grim.reap(file)
-      png = pdf[0].save(file.split(".").first + '.png',
-                        {:quality => 90, :alpha => "remove", :colorspace => "RGB"}
-                      )
+    def self.pdf_to_png(pdf_file_path, png_path_dir, png_name)
+      pngs = []
+      pdf = Grim.reap(pdf_file_path)
+      pdf.each_with_index { |pdf_i, i|
+        png_file_fullname ="#{png_path_dir}/#{png_name}_#{i+1}.png"
+        successd = pdf_i.save(png_file_fullname,
+                              {:quality => 90, :alpha => "remove", :colorspace => "RGB"})
 
+        pngs << {fullname: png_file_fullname, successd: successd}
+      }
+      pngs
     end
 
   end # end module

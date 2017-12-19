@@ -23,9 +23,12 @@ module KuaiJieQian
 
     def self.pdf_to_png(pdf_file_path, png_path_dir, png_name)
       pngs = []
+      puts pdf_file_path
+
       pdf = Grim.reap(pdf_file_path)
       pdf.each_with_index { |pdf_i, i|
         png_file_fullname ="#{png_path_dir}/#{png_name}_#{i+1}.png"
+        puts png_file_fullname
         successd = pdf_i.save(png_file_fullname,
                               {:quality => 90, :alpha => "remove", :colorspace => "RGB"})
 

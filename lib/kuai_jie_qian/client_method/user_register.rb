@@ -16,67 +16,51 @@ module KuaiJieQian
       #   * seal_data [String] 电子印章图片base64数据
       #
       def user_register(name, id, color, template_type, reg_type)
-        account_id = if 'PERSONAL' == reg_type
-                       create_person_account(name, id)
-                     else
-                       create_company_account(name, id, reg_type)
-                     end
-
-        seal_data = create_company_seal(account_id, color, template_type)
+        account_id = create_account(name, id, reg_type)
+        seal_data = create_seal(reg_type, account_id, color, template_type)
 
         return { :account_id => account_id, :seal_data => seal_data}
       end
 
-
       private
 
-      # 创建个人用户账号
-      def create_person_account(user_name, id)
-        path = "tech-sdkwrapper/timevale/account/addPerson"
-        params = {
-        	"name": user_name,
-        	"idNo": id
-        }
+      def create_account(user_name, id, reg_type)
+        if 'PERSONAL' == reg_type
+          path = "tech-sdkwrapper/timevale/account/addPerson"
+          params = {
+            name: user_name,
+            idNo: id
+          }
+        else
+          path = "tech-sdkwrapper/timevale/account/addOrganize"
+          params = {
+            name: user_name,
+            organCode: id,
+            regType: reg_type
+          }
+        end
+        
         account_data = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
+        
         return account_data[:accountId]
       end
 
-      #创建个人用户印章
-      def create_person_seal(account_id, color, template_type)
-        path = "tech-sdkwrapper/timevale/seal/addPersonSeal"
+      def create_seal(reg_type, account_id, color, template_type)
+        path = if 'PERSONAL' == reg_type
+                 "tech-sdkwrapper/timevale/seal/addPersonSeal"
+               else
+                 "tech-sdkwrapper/timevale/seal/addOrganizeSeal"
+               end
+        
         params = {
-          "accountId": account_id,
-          "color": color,
-          "templateType": template_type
+          accountId: account_id,
+          color: color,
+          templateType: template_type
         }
         seal_data = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
+
         return seal_data[:sealData]
       end
-
-      #创建企业用户账号
-      def create_company_account(name, id, reg_type)
-        path = "tech-sdkwrapper/timevale/account/addOrganize"
-        params = {
-        "name": name ,
-        "organCode": id,
-        "regType": reg_type
-      }
-      account_data = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
-      return account_data[:accountId]
-      end
-
-      #创建企业用户印章
-      def create_company_seal(account_id, color, template_type)
-        path = "tech-sdkwrapper/timevale/seal/addOrganizeSeal"
-        params = {
-          "accountId": account_id,
-          "color": color,
-          "templateType": template_type
-        }
-        seal_data = KuaiJieQian::Http.post(@config[:host], @config[:project_config][:projectId], path, params)
-        return seal_data[:sealData]
-      end
-
     end # end module
   end
 end

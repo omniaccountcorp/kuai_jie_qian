@@ -17,11 +17,11 @@ module KuaiJieQian
         request_body = params
       end
 
-      KuaiJieQian.logger.info "post [#{final_url}] with header: [#{header}], params: [#{params}]"
+      # KuaiJieQian.logger.info "post [#{final_url}] with header: [#{header}], params: [#{params}]"
 
       response = RestClient.post(final_url, request_body, header)
 
-      KuaiJieQian.logger.debug "post [#{final_url}] got result: [#{response}]\n"
+      # KuaiJieQian.logger.info "post [#{final_url}] got result: [#{response}]\n"
 
       begin
         res = Utils.symbolize_keys(JSON.parse(response))
@@ -29,7 +29,7 @@ module KuaiJieQian
         raise "post [#{final_url}] 解析结果出错"
       end
 
-      KuaiJieQian.logger.debug "res: [#{res}]\n"
+      # KuaiJieQian.logger.debug "res: [#{res}]\n"
       res
     end
 

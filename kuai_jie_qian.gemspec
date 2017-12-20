@@ -40,6 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rest-client', '~> 2.0', '>= 2.0.2'
   spec.add_dependency 'pdfkit', '~> 0.8.2'
   spec.add_dependency 'wkhtmltopdf-binary', '~> 0.12.3.1'
-  spec.add_dependency 'grim'
   spec.add_dependency 'rmagick', '~>2.16.0'
 end

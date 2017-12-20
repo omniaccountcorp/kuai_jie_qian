@@ -23,17 +23,32 @@ module KuaiJieQian
 
     def self.pdf_to_png(pdf_file_path, png_path_dir, png_name)
       pngs = []
-      puts pdf_file_path
 
-      pdf = Grim.reap(pdf_file_path)
-      pdf.each_with_index { |pdf_i, i|
+      pdf = Magick::ImageList.new(pdf_file_path){self.background_color = 'white'}
+
+      pdf.each_with_index{ |obj, i|
         png_file_fullname ="#{png_path_dir}/#{png_name}_#{i+1}.png"
-        puts png_file_fullname
-        successd = pdf_i.save(png_file_fullname,
-                              {:quality => 90, :alpha => "remove", :colorspace => "RGB"})
-
-        pngs << {fullname: png_file_fullname, successd: successd}
+        res = obj.write(png_file_fullname)
+        pngs << {fullname: png_file_fullname, successd: !res.nil?}
       }
+
+      # pdf = Grim.reap(pdf_file_path)
+
+      # KuaiJieQian.logger.info pdf_file_path
+      # KuaiJieQian.logger.info pdf
+
+      # count = pdf.count
+
+      # KuaiJieQian.logger.info count
+
+      # (0..count-1).each{ |i|
+      #   png_file_fullname ="#{png_path_dir}/#{png_name}_#{i+1}.png"
+      #   KuaiJieQian.logger.info i
+      #   successd = pdf[i].save(png_file_fullname,
+      #                         {:quality => 90, :alpha => "remove", :colorspace => "RGB"})
+      #   pngs << {fullname: png_file_fullname, successd: successd}
+      # }
+
       pngs
     end
 
